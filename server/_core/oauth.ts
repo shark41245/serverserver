@@ -37,14 +37,13 @@ export function registerOAuthRoutes(app: Express) {
         return res.status(400).json({ error: "Invalid OAuth response" });
       }
 
-      const user = await db.upsertUser({
+      await db.upsertUser({
         openId,
-        userId: `user_${Date.now()}`,
+        userId: openId,
       });
 
       return res.json({
         success: true,
-        user,
       });
     } catch (error) {
       console.error("OAuth callback error:", error);
