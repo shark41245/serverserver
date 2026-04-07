@@ -12,15 +12,17 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 registerOAuthRoutes(app);
 
+// 여기 수정
 app.use(
-  "/api/trpc",
+  "/trpc",
   createExpressMiddleware({
     router: appRouter,
     createContext,
   })
 );
 
-app.get("/api/health", (_req, res) => {
+// 여기 수정
+app.get("/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
