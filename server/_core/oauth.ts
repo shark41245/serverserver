@@ -1,7 +1,5 @@
 import type { Express, Request, Response } from "express";
 import * as db from "../db.js";
-import { getSessionCookieOptions } from "./cookies.js";
-import { sdk } from "./sdk.js";
 
 export function registerOAuthRoutes(app: Express) {
   app.get("/oauth/callback", async (req: Request, res: Response) => {
@@ -35,11 +33,14 @@ export function registerOAuthRoutes(app: Express) {
       const data = await response.json();
       const { openId } = data ?? {};
 
-      if (!openId) {
+      if (!openId || typeof openId !== "string") {
         return res.status(400).json({ error: "Invalid OAuth response" });
       }
 
-      const user = await db.upsertUser({ openId });
+      const user = await db.upsertUser({
+        openId,
+        userId: `user_${Date.now()}`,
+      });
 
       return res.json({
         success: true,
