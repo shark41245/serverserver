@@ -1,9 +1,9 @@
 import "dotenv/config";
 import express from "express";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { registerOAuthRoutes } from "../server/_core/oauth";
-import { appRouter } from "../server/routers";
-import { createContext } from "../server/_core/context";
+import { registerOAuthRoutes } from "../server/_core/oauth.js";
+import { appRouter } from "../server/routers/index.js";
+import { createContext } from "../server/_core/context.js";
 
 const app = express();
 
@@ -12,7 +12,6 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 registerOAuthRoutes(app);
 
-// 여기 수정
 app.use(
   "/trpc",
   createExpressMiddleware({
@@ -21,9 +20,11 @@ app.use(
   })
 );
 
-// 여기 수정
-app.get("/health", (req, res) => {
-  res.json({ status: "ok", timestamp: new Date().toISOString() });
+app.get("/health", (_req, res) => {
+  res.json({
+    status: "ok",
+    timestamp: new Date().toISOString(),
+  });
 });
 
 export default app;
