@@ -8,40 +8,29 @@ const ADMIN_PASSWORD = "10004";
 export const appRouter = router({
   shark: router({
     signup: publicProcedure
-      .input(z.object({
-        userId: z.string(),
-        password: z.string()
-      }))
+      .input(z.object({ userId: z.string(), password: z.string() }))
       .mutation(async ({ input }) => {
         await createUser(input);
         return { success: true };
       }),
 
     login: publicProcedure
-      .input(z.object({
-        userId: z.string(),
-        password: z.string()
-      }))
+      .input(z.object({ userId: z.string(), password: z.string() }))
       .mutation(async ({ input }) => {
         const user = await findUser(input.userId);
-
         if (!user || user.password !== input.password) {
-          throw new Error("로그인 실패");
+          throw new Error("login failed");
         }
-
         return { success: true };
       }),
 
     getUsers: publicProcedure
-      .input(z.object({
-        adminPassword: z.string()
-      }))
+      .input(z.object({ adminPassword: z.string() }))
       .query(async ({ input }) => {
         if (input.adminPassword !== ADMIN_PASSWORD) {
-          throw new Error("관리자 비밀번호 틀림");
+          throw new Error("wrong admin password");
         }
-
-        return await getAllUsers();
+        return getAllUsers();
       })
   })
 });

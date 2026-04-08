@@ -1,12 +1,14 @@
 {
   "name": "serverserver",
   "type": "module",
+  "scripts": {
+    "build": "echo build skip",
+    "start": "node api/index.js"
+  },
   "dependencies": {
     "express": "^4.19.2",
     "@trpc/server": "^10.45.0",
-    "zod": "^3.22.4",
-    "drizzle-orm": "^0.30.0",
-    "postgres": "^3.4.4"
+    "zod": "^3.22.4"
   },
   "engines": {
     "node": "20.x"

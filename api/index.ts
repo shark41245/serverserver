@@ -6,7 +6,6 @@ import { appRouter } from "../server/routers.js";
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.use("/trpc", createExpressMiddleware({
   router: appRouter,
